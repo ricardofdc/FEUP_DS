@@ -2,6 +2,8 @@ import json
 import random
 import string
 import datetime
+import requests
+
 
 
 #//null means that the field is optional, 
@@ -102,7 +104,7 @@ def generateEstimateFail():
 def generateErrorId():
     n = getRandomNumber(1,6)
     if n==1 or n==2 or n==3:
-        return getRandomNumber(1,1000)
+        return getRandomNumber(-2,5)
 
     elif n==4:
         return getRandomString()
@@ -150,7 +152,11 @@ def incoherent_output_data():
     return data
 
 if __name__ == '__main__':
-    incoherent_output_data()
+    data = incoherent_output_data()
+    
+    #print(data)
+    
+    requests.post('http://localhost:8000/central', data)
 
 
 
