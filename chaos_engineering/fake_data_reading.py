@@ -15,7 +15,6 @@ def create_fake_data_reading():
 
 def main():
     json_reading = create_fake_data_reading()
-    print(json_reading)
     requests.post('http://localhost:8000/fault', json_reading)
 
 
