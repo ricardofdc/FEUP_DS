@@ -13,6 +13,7 @@ public class MachineNode {
     String output;    
     ConcurrentHashMap<String, Integer> currentInput; 
     Integer productCounter;                              // How many subproducts were produced.
+    Integer defectiveProducts;
 
     public MachineNode(String id){
         this.id = id;
@@ -22,6 +23,7 @@ public class MachineNode {
         this.inputs = new ConcurrentHashMap<>();
         this.currentInput = new ConcurrentHashMap<>();
         this.productCounter = 0;
+        this.defectiveProducts = 0;
     }
 
     public String getId(){
@@ -42,6 +44,10 @@ public class MachineNode {
 
     public Integer getProductCount(){
         return this.productCounter;
+    } 
+
+    public Integer getDefectiveCount(){
+        return this.defectiveProducts;
     } 
 
     public List<MachineNode> getNext(){
@@ -76,6 +82,10 @@ public class MachineNode {
 
     public void updateCounter(){ 
         this.productCounter++;
+    }
+
+    public void addDefectiveProduct(){ 
+        this.defectiveProducts++;
     }
 
     public void cleanProducedInput(){

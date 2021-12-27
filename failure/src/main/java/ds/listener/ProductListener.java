@@ -37,6 +37,11 @@ public class ProductListener extends Listener {
         // New sub-product was produced by the machine
         if(state.equals("out")){
             machine.updateCounter();
+            boolean defect = messageParsed.getBoolean("defect");
+            if(defect){
+                machine.addDefectiveProduct();
+                System.out.println("MachineID :: " + machine.getId() + ":: Defective Product");
+            }
             //System.out.println("=== Machine " + machineID + " total products = " + machine.getProductCount() + " ===");
         }
         // New subproduct was received by the machine

@@ -31,13 +31,16 @@ public class ProductSensor extends Sensor {
     }
 
     private void simulateOutput(MachineNode startMachine){
+
+        // Simulate defective product
+        boolean defect = (rnd.nextInt(20) == 0);
         // Send output message
-        String message = this.getOutputMessage(startMachine);
+        String message = this.getOutputMessage(startMachine, defect);
         this.publish(message);
 
         List<MachineNode> nextMachines = startMachine.getNext();
 
-        if(nextMachines.size() > 0){
+        if(nextMachines.size() > 0 && !defect){
             // Get one of the next machines
             Integer machineIdx = this.rnd.nextInt(nextMachines.size());
             MachineNode nextMachine = nextMachines.get(machineIdx.intValue());
@@ -69,7 +72,7 @@ public class ProductSensor extends Sensor {
     /**
      * This method simulates reading of a product state
      */
-    protected String getOutputMessage(MachineNode machine){
+    protected String getOutputMessage(MachineNode machine, boolean defect){
         String readTime = Utils.getDateTime(); 
 
         JSONObject messageObject = new JSONObject();
@@ -77,6 +80,8 @@ public class ProductSensor extends Sensor {
         messageObject.put("reading-time", readTime);
         messageObject.put("product", machine.getOutput());
         messageObject.put("state", "out");
+        
+        messageObject.put("defect", defect);
         
         return messageObject.toString(); 
     }

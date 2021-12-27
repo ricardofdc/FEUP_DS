@@ -5,15 +5,19 @@
     sudo docker-compose build 
     sudo docker-compose up -d
 ```
-2. To get the log prints from publisher
+2. To get the log prints from the machine sensors
 ```
-    sudo docker logs publisher --follow
-``` 
-3. To get the log prints from the listener (edge layer)
+    sudo docker logs machines --follow
 ```
-    sudo docker logs listener --follow
+3. To get the log prints from the product tracking sensors
 ```
-4. To stop the project. 
+    sudo docker logs products --follow
+```  
+4. To get the log prints from the listener (edge layer)
+```
+    sudo docker logs failure-service --follow
+```
+5. To stop the project. 
 ```
     sudo docker-compose stop
 ```
