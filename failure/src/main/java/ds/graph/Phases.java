@@ -69,16 +69,15 @@ public class Phases {
         return builder.toString();
     }
 
-    public void showState(){
+    public String getState(){
         
         StringBuilder builder = new StringBuilder(); 
-        builder.append("\n====== PRODUCTION STATE =======\n"); 
 
         this.phases.keySet().forEach(phaseId -> {
             builder.append(this.phases.get(phaseId).getState());
-            builder.append("\n=========\n"); 
         });
-        System.out.println(builder.toString());
+        
+        return builder.toString();
     }
 
 }

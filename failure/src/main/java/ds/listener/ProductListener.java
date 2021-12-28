@@ -22,7 +22,7 @@ public class ProductListener extends Listener {
     public void init(){
         super.init();
         this.executor = new ScheduledThreadPoolExecutor(5);
-        executor.scheduleWithFixedDelay(new Thread(() -> this.phases.showState()), 0, 5000, TimeUnit.MILLISECONDS);
+        executor.scheduleWithFixedDelay(new Thread(() -> this.showState()), 0, 5000, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -49,5 +49,23 @@ public class ProductListener extends Listener {
             String product = messageParsed.getString("product");
             machine.addCurrentInput(product);
         }
+    }
+
+    public void showState(){
+        StringBuilder builder = new StringBuilder(); 
+        builder.append("\n====== PRODUCTION STATE =======\n"); 
+        builder.append("\n=== PHASES ===\n"); 
+        builder.append(this.phases.getState());
+        builder.append("\n\n=== MACHINES ===\n");
+        
+        for(String machineID : this.machinesGraph.getMachines()){
+            MachineNode machine = this.machinesGraph.getMachineNode(machineID);
+            builder.append("Machine ").append(machineID).append(" :: ");
+            builder.append(machine.getDefectiveCount()).append(" defective / ");
+            builder.append(machine.getProductCount()).append(" subproducts\n");
+        }
+        builder.append("\n===============================\n");
+
+        System.out.println(builder.toString());
     }
 }

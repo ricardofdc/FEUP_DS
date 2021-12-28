@@ -1,5 +1,6 @@
 package ds.graph;
 
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Phase {
@@ -13,6 +14,10 @@ public class Phase {
         this.amounts = new ConcurrentHashMap<>();
     } 
 
+    public ConcurrentHashMap<String, MachineNode> getOutMachines() {
+        return outMachines;
+    }
+
     public void addAmount(String prod, Integer amount){
         amounts.put(prod, amount); 
     }
@@ -21,9 +26,12 @@ public class Phase {
         this.outMachines.put(machineId, machineNode);
     }
 
-    public int getCompleteProducts(){
-        ConcurrentHashMap<String, Integer> currentAmounts = new ConcurrentHashMap<>();
+    public ProductionState getProductionState(){
+        HashMap<String, Integer> currentAmounts = new HashMap<>();
+        HashMap<String, Integer> defectiveAmounts = new HashMap<>();
+
         int totalProducts = Integer.MAX_VALUE;
+        int defectiveProducts = Integer.MAX_VALUE;
 
         // Get total subproducts produced in this phase
         for(String machineId: outMachines.keySet()){
@@ -31,19 +39,28 @@ public class Phase {
             String output = machine.getOutput();
             
             Integer currentAmount = currentAmounts.getOrDefault(output,0);
+            Integer defectiveAmount = defectiveAmounts.getOrDefault(output,0);
+
             currentAmount += machine.getProductCount();
             currentAmounts.put(output, currentAmount);
+
+            defectiveAmount += machine.getDefectiveCount();
+            defectiveAmounts.put(output, defectiveAmount);
         }
 
         // Verify how many output products were produced
         for(String output: amounts.keySet()){
             Integer currentAmount = currentAmounts.getOrDefault(output,0);
+            Integer defectiveAmount = defectiveAmounts.getOrDefault(output,0);
+
             Integer producedSubProducts = currentAmount / amounts.get(output);
+            Integer defectiveSubProducts = defectiveAmount / amounts.get(output);
 
             totalProducts = Math.min(producedSubProducts.intValue(), totalProducts);
+            defectiveProducts = Math.min(defectiveSubProducts.intValue(), defectiveProducts);
         }
 
-        return totalProducts;
+        return new ProductionState(totalProducts, defectiveProducts);
     }
 
     public String toString(){
@@ -66,10 +83,8 @@ public class Phase {
 
     public String getState(){
         StringBuilder builder = new StringBuilder(); 
-        builder.append("[PRODUCTION PHASE]: ").append(id).append("\n");
-        
-        builder.append("[COMPLETED PRODUCTS]: "); 
-        builder.append(this.getCompleteProducts());
+        builder.append("Production Phase ").append(id).append(" :: ");
+        builder.append(this.getProductionState());
         
         return builder.toString(); 
     }
