@@ -1,3 +1,5 @@
 .gradle/*
 bin/*
 .idea/*
+build/*
+gradle/*
