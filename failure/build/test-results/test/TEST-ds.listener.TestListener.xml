@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ds.listener.TestListener" tests="4" skipped="0" failures="0" errors="0" timestamp="2021-12-31T01:43:41" hostname="MacBook-Pro-de-Ricardo.local" time="0.012">
+  <properties/>
+  <testcase name="testMachineOrientationMessageArrived()" classname="ds.listener.TestListener" time="0.009"/>
+  <testcase name="testPositionMessageArrived()" classname="ds.listener.TestListener" time="0.001"/>
+  <testcase name="testTemperatureMessageArrived()" classname="ds.listener.TestListener" time="0.001"/>
+  <testcase name="testMachineVelocityMessageArrived()" classname="ds.listener.TestListener" time="0.0"/>
+  <system-out><![CDATA[{"readingTime":"31-12-2021 00:30:46.610169","machineID":1,"sensorType":"MACHINE_ORIENTATION","values":{"orientation":45},"sensorID":"machOrientation1"}
+{"readingTime":"31-12-2021 00:30:46.610169","machineID":1,"sensorType":"POSITION","values":{"x":3,"y":1},"sensorID":"position1"}
+{"readingTime":"31-12-2021 00:30:46.610169","machineID":1,"sensorType":"MACHINE_VELOCITY","values":{"velocity":0},"sensorID":"machVelocity1"}
+{"readingTime":"31-12-2021 00:30:46.610169","machineID":1,"sensorType":"MACHINE_VELOCITY","values":{"velocity":0},"sensorID":"machVelocity1"}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
