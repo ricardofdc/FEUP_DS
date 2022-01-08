@@ -1,4 +1,5 @@
 //const mqtt = require('mqtt');
+const DashboardConnector = require('./DashboardConnector.js');
 const FactoryFloor = require('./FactoryFloor.js');
 const Machine = require('./Machine.js');
 const MQTTClient = require('./MQTTClient.js');
@@ -12,6 +13,7 @@ const MQTT_OPTIONS = {
 };
 
 //const client = mqtt.connect('mqtt://localhost', MQTT_OPTIONS);
+const connector = new DashboardConnector();
 const client  = new MQTTClient();
 var floor = new FactoryFloor(FACTORY_FLOOR_WIDTH, FACTORY_FLOOR_HEIGHT);
 
@@ -24,9 +26,7 @@ client.on('connect', function () {
 client.on('message', function (topic, message) {
 
   if(topic == 'startup'){
-    const json_config = JSON.parse(message.toString());
-      //console.log(json_config);
-
+      const json_config = JSON.parse(message.toString());
       var machine = new Machine(json_config.id, 1, 1);
 
       for(let i = 0; i < json_config.sensors.length; i++){
@@ -61,9 +61,12 @@ client.on('message', function (topic, message) {
       }
 
       floor.addMachine(machine, null, [json_config.nextMachineID]);
+      connector.sendJSONMessage("/new_connection", json_config);
+
       return;
   }
   if (topic.startsWith("machine/")){
+
       const data = JSON.parse(message);
 
       const machineId = data.machineID;
