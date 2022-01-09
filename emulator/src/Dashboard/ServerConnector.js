@@ -12,20 +12,20 @@ class ServerConnector {
             });
 
             req.on('end', function () {
-                // console.log(body);
+                switch (req.url) {
+                    case "/new_connection":
+                        window.webContents.send('asynchronous-message', body);
+                        res.writeHead(200);
+                        res.end('Hello from \'new_connection\'');
+                        break;
+                    default: 
+                        res.writeHead(200);
+                        res.end('Hello from \'' + req.url + '\'');
+                        break;
+                }
               });
 
-            switch (req.url) {
-                case "/new_connection":
-                    window.webContents.send('asynchronous-message', "hello renderer");
-                    res.writeHead(200);
-                    res.end('Hello from \'new_connection\'');
-                    break;
-                default: 
-                    res.writeHead(200);
-                    res.end('Hello from \'' + req.url + '\'');
-                    break;
-            }
+            
           }
     }
 
